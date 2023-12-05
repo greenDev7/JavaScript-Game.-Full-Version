@@ -8,6 +8,10 @@ class Player {
         this.speedY = 0;
         this.maxSpeed = 10;
         this.projectiles = [];
+        this.image = document.getElementById('player');
+        this.frameX = 0;
+        this.frameY = 0;
+        this.maxFrame = 38;
     }
 
     update() {
@@ -22,12 +26,21 @@ class Player {
         // handle projectiles
         this.projectiles.forEach(pr => { pr.update(); });
         this.projectiles = this.projectiles.filter(pr => !pr.markedForDeletion);
+        // sprite animation
+        if (this.frameX < this.maxFrame) {
+            this.frameX++;
+        } else {
+            this.frameX = 0;
+        }
     }
 
     draw(context) {
         context.fillStyle = 'black';
         context.fillRect(this.x, this.y, this.width, this.height);
         this.projectiles.forEach(pr => { pr.draw(context); });
+        // draw the player
+        context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height,
+            this.x, this.y, this.width, this.height);
     }
 
     shootTop() {
