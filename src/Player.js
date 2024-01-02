@@ -35,8 +35,7 @@ class Player {
     }
 
     draw(context) {
-        context.fillStyle = 'black';
-        context.fillRect(this.x, this.y, this.width, this.height);
+        if (this.game.debug) context.strokeRect(this.x, this.y, this.width, this.height);
         this.projectiles.forEach(pr => { pr.draw(context); });
         // draw the player
         context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height,

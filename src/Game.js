@@ -20,6 +20,7 @@ class Game {
         this.gameTime = 0;
         this.timeLimit = 20 * 1000;
         this.speed = 1;
+        this.debug = true;
     }
 
     update(deltaTime) {
