@@ -1,9 +1,10 @@
 class Angler2 extends Enemy {
     constructor(game) {
         super(game);
-        this.width = 213 * 0.3;
-        this.height = 165 * 0.3;
+        this.width = 213;
+        this.height = 165;
         this.y = Math.random() * (this.game.height * 0.95 - this.height);
-        this.color = 'lightgreen';
+        this.image = document.getElementById('angler2');
+        this.frameY = Math.floor(Math.random() * 2);
     }
 }
