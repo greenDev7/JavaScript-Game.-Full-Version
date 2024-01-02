@@ -4,8 +4,6 @@ class Enemy {
         this.x = this.game.width;
         this.speedX = Math.random() * -1.5 - 2.5;
         this.markedForDeletion = false;
-        this.lives = 5;
-        this.score = this.lives;
         this.frameX = 0;
         this.frameY = 0;
         this.maxFrame = 38;
