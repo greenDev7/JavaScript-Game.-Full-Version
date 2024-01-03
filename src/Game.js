@@ -28,7 +28,7 @@ class Game {
         if (this.gameTime > this.timeLimit) this.gameOver = true;
         this.background.update();
         this.background.layer4.update();
-        this.player.update();
+        this.player.update(deltaTime);
         if (this.ammoTimer > this.ammoInterval) {
             if (this.ammo < this.maxAmmo) this.ammo++;
             this.ammoTimer = 0;
@@ -40,6 +40,11 @@ class Game {
             enemy.update();
             if (this.checkCollision(this.player, enemy)) {
                 enemy.markedForDeletion = true;
+
+                // Если наш игрок столкнулся с Рыбкой-Удачей
+                if (enemy.type === 'lucky')
+                    this.player.enterPowerUp(); // Активируем "Энергетический режим"
+                else if (!this.gameOver) this.score--; // Если столкнулся с другим врагом - отнимаем из жизни игрока одну жизнь
             }
             this.player.projectiles.forEach(projectile => {
                 // Если пуля попала в врага
@@ -76,8 +81,9 @@ class Game {
 
     addEnemy() {
         const randomize = Math.random();
-        if (randomize < 0.5) this.enemies.push(new Angler1(this))
-        else this.enemies.push(new Angler2(this));
+        if (randomize < 0.3) this.enemies.push(new Angler1(this));
+        else if (randomize < 0.6) this.enemies.push(new Angler2(this));
+        else this.enemies.push(new LuckyFish(this));  // добавляем Рыбку-Удачу
     }
 
     checkCollision(rect1, rect2) {
