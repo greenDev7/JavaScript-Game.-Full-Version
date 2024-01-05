@@ -2,7 +2,7 @@ class UI {
     constructor(game) {
         this.game = game;
         this.fontSize = 25;
-        this.fontFamily = 'Helvetica';
+        this.fontFamily = 'Bangers';
         this.color = 'white';
     }
 
@@ -24,11 +24,11 @@ class UI {
             let message1;
             let message2;
             if (this.game.isWin()) {
-                message1 = 'Победа!';
-                message2 = 'Отличная работа!';
+                message1 = 'Most Wondrous!';
+                message2 = 'Well done explorer!';
             } else {
-                message1 = 'Попробуй еще раз!';
-                message2 = 'В следующий раз все получится!';
+                message1 = 'Blazes!';
+                message2 = 'Get my repair kit and try again!';
             }
             context.font = '70px ' + this.fontFamily;
             context.fillText(message1, this.game.width * 0.5, this.game.height * 0.5 - 20);
