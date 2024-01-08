@@ -8,6 +8,7 @@ class Game {
         this.ui = new UI(this);
         this.keys = [];
         this.enemies = [];
+        this.particles = [];
         this.enemyTimer = 0;
         this.enemyInterval = 1000;
         this.ammo = 20;
@@ -20,7 +21,7 @@ class Game {
         this.gameTime = 0;
         this.timeLimit = 20 * 1000;
         this.speed = 1;
-        this.debug = true;
+        this.debug = false;
     }
 
     update(deltaTime) {
@@ -35,12 +36,14 @@ class Game {
         } else {
             this.ammoTimer += deltaTime;
         }
-
+        this.particles.forEach(p => p.update());
+        this.particles = this.particles.filter(p => !p.markedForDeletion);
         this.enemies.forEach(enemy => {
             enemy.update();
+            // если игрок столкнулся с врагом, то...
             if (this.checkCollision(this.player, enemy)) {
                 enemy.markedForDeletion = true;
-
+                this.addParticles(enemy.lives, enemy); // добавляем разлетающиеся частицы, их количество равно жизням врага, с которым столкнулся игрок 
                 // Если наш игрок столкнулся с Рыбкой-Удачей
                 if (enemy.type === 'lucky')
                     this.player.enterPowerUp(); // Активируем "Энергетический режим"
@@ -50,11 +53,12 @@ class Game {
                 // Если пуля попала в врага
                 if (this.checkCollision(projectile, enemy)) {
                     enemy.lives--; // уменьшаем жизни врага на единицу
+                    this.addParticles(1, enemy); // добавляем одну разлетающуюся "частицу"
                     projectile.markedForDeletion = true; // удаляем пулю
                     // Проверяем, если у врага не осталось жизней
                     if (enemy.lives <= 0) {
                         enemy.markedForDeletion = true; // удаляем врага        
-                        if (!this.gameOver) this.score += enemy.score; // увеличиваем количество очков главного игрока       
+                        if (!this.gameOver) this.score += enemy.score; // увеличиваем количество очков игрока       
                         if (this.isWin()) this.gameOver = true;  // проверяем условие победы
                     }
                 }
@@ -75,6 +79,7 @@ class Game {
         this.background.draw(context); // Сначала рисуем фон (первые три слоя)
         this.player.draw(context); // а потом все остальные объекты игры: игрока, UI, враги и т.п.
         this.ui.draw(context);
+        this.particles.forEach(particle => particle.draw(context));
         this.enemies.forEach(enemy => enemy.draw(context));
         this.background.layer4.draw(context); // Рисуем 4-ый слой, чтобы он был спереди всех объектов
     }
@@ -84,6 +89,12 @@ class Game {
         if (randomize < 0.3) this.enemies.push(new Angler1(this));
         else if (randomize < 0.6) this.enemies.push(new Angler2(this));
         else this.enemies.push(new LuckyFish(this));  // добавляем Рыбку-Удачу
+    }
+
+    addParticles(number, enemy) {
+        for (let i = 0; i < number; i++) {
+            this.particles.push(new Particle(this, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5));
+        };
     }
 
     checkCollision(rect1, rect2) {
