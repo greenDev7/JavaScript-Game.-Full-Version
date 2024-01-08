@@ -57,7 +57,17 @@ class Game {
                     projectile.markedForDeletion = true; // удаляем пулю
                     // Проверяем, если у врага не осталось жизней
                     if (enemy.lives <= 0) {
-                        enemy.markedForDeletion = true; // удаляем врага        
+                        enemy.markedForDeletion = true; // удаляем врага 
+                        // Если мы уничтожили большого врага (тип hive)  
+                        if (enemy.type === 'hive') {
+                            for (let i = 0; i < 5; i++) {
+                                // создаем массив из 5-ти дронов
+                                this.enemies.push(new Drone(this,
+                                    enemy.x + Math.random() * enemy.width, enemy.y + Math.random() *
+                                    enemy.height * 0.5));
+                            }
+
+                        };
                         if (!this.gameOver) this.score += enemy.score; // увеличиваем количество очков игрока       
                         if (this.isWin()) this.gameOver = true;  // проверяем условие победы
                     }
@@ -88,7 +98,8 @@ class Game {
         const randomize = Math.random();
         if (randomize < 0.3) this.enemies.push(new Angler1(this));
         else if (randomize < 0.6) this.enemies.push(new Angler2(this));
-        else this.enemies.push(new LuckyFish(this));  // добавляем Рыбку-Удачу
+        else if (randomize < 0.7) this.enemies.push(new HiveWhale(this));
+        else this.enemies.push(new LuckyFish(this));
     }
 
     addParticles(number, enemy) {
