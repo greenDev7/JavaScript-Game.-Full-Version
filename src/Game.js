@@ -9,6 +9,7 @@ class Game {
         this.keys = [];
         this.enemies = [];
         this.particles = [];
+        this.explosions = [];
         this.enemyTimer = 0;
         this.enemyInterval = 1000;
         this.ammo = 20;
@@ -36,13 +37,19 @@ class Game {
         } else {
             this.ammoTimer += deltaTime;
         }
+        // Обновляем и удаляем шестеренки (частицы)
         this.particles.forEach(p => p.update());
         this.particles = this.particles.filter(p => !p.markedForDeletion);
+        // Обновляем и удаляем взрывы (explosions)
+        this.explosions.forEach(ex => ex.update(deltaTime));
+        this.explosions = this.explosions.filter(ex => !ex.markedForDeletion);
+
         this.enemies.forEach(enemy => {
             enemy.update();
             // если игрок столкнулся с врагом, то...
             if (this.checkCollision(this.player, enemy)) {
                 enemy.markedForDeletion = true;
+                this.addExplosion(enemy); // добавляем взрыв
                 this.addParticles(enemy.lives, enemy); // добавляем разлетающиеся частицы, их количество равно жизням врага, с которым столкнулся игрок 
                 // Если наш игрок столкнулся с Рыбкой-Удачей
                 if (enemy.type === 'lucky')
@@ -58,6 +65,7 @@ class Game {
                     // Проверяем, если у врага не осталось жизней
                     if (enemy.lives <= 0) {
                         enemy.markedForDeletion = true; // удаляем врага 
+                        this.addExplosion(enemy); // добавляем взрыв
                         // Если мы уничтожили большого врага (тип hive)  
                         if (enemy.type === 'hive') {
                             for (let i = 0; i < 5; i++) {
@@ -91,6 +99,7 @@ class Game {
         this.ui.draw(context);
         this.particles.forEach(particle => particle.draw(context));
         this.enemies.forEach(enemy => enemy.draw(context));
+        this.explosions.forEach(ex => ex.draw(context));
         this.background.layer4.draw(context); // Рисуем 4-ый слой, чтобы он был спереди всех объектов
     }
 
@@ -106,6 +115,17 @@ class Game {
         for (let i = 0; i < number; i++) {
             this.particles.push(new Particle(this, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5));
         };
+    }
+
+    addExplosion(enemy) {
+        const randomize = Math.random();
+        if (randomize < 0.5) {
+            this.explosions.push(new SmokeExplosion(this, enemy.x + enemy.width * 0.5,
+                enemy.y + enemy.height * 0.5));
+        } else {
+            this.explosions.push(new FireExplosion(this, enemy.x + enemy.width * 0.5,
+                enemy.y + enemy.height * 0.5));
+        }
     }
 
     checkCollision(rect1, rect2) {
