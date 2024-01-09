@@ -10,12 +10,12 @@ class Explosion {
         this.y = y - this.height * 0.5;
         this.fps = 30;
         this.timer = 0;
-        this.interval = 1000 / this.fps;
+        this.interval = 1 / this.fps;
         this.markedForDeletion = false;
         this.maxFrame = 8;
     }
     update(deltaTime) {
-        this.x -= this.game.speed; // для того, чтобы взрывы двигались вместе с игрой, а не стояли на месте
+        this.x -= this.game.speed * deltaTime; // для того, чтобы взрывы двигались вместе с игрой, а не стояли на месте
         if (this.timer > this.interval) {
             this.frameX++;
             this.timer = 0;

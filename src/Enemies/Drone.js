@@ -10,6 +10,6 @@ class Drone extends Enemy {
         this.lives = 3;
         this.score = this.lives;
         this.type = 'drone';
-        this.speedX = Math.random() * -4.2 - 0.5;
+        this.speedX = Math.random() * -252 - 30;
     }
 }

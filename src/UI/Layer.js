@@ -8,9 +8,9 @@ class Layer {
         this.x = 0;
         this.y = 0;
     }
-    update() {
+    update(deltaTime) {
         if (this.x <= -this.width) this.x = 0;
-        this.x -= this.game.speed * this.speedModifier;
+        this.x -= this.game.speed * this.speedModifier * deltaTime;
     }
     draw(context) {
         context.drawImage(this.image, this.x, this.y);

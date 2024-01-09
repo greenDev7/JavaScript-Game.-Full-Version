@@ -5,13 +5,13 @@ class Projectile {
         this.y = y;
         this.width = 10;
         this.height = 3;
-        this.speed = 10;
+        this.speed = 600;
         this.markedForDeletion = false;
         this.image = document.getElementById('projectile');
     }
 
-    update() {
-        this.x += this.speed;
+    update(deltaTime) {
+        this.x += this.speed * deltaTime;
         if (this.x > this.game.width * 0.8) this.markedForDeletion = true;
     }
 

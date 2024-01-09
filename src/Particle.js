@@ -9,21 +9,21 @@ class Particle {
         this.spriteSize = 50;
         this.sizeModifier = (Math.random() * 0.5 + 0.5).toFixed(1);
         this.size = this.spriteSize * this.sizeModifier;
-        this.speedX = Math.random() * 6 - 3;
-        this.speedY = Math.random() * -15;
-        this.gravity = 0.5; // коэффициент увеличения скорости (ускорение)
+        this.speedX = Math.random() * 360 - 180;
+        this.speedY = Math.random() * -900;
+        this.gravity = 1800; // коэффициент увеличения скорости (ускорение)
         this.markedForDeletion = false;
         this.angle = 0; // начальный угол поворота частицы
-        this.va = Math.random() * 0.2 - 0.1; // скорость поворота частицы
+        this.va = Math.random() * 12 - 6; // скорость поворота частицы
         this.bounced = 0; // количество ударов (отскоков) частицы от поверхности "земли"
         this.bottomBounceBoundary = Math.random() * 80 + 60; // границы касания частиц с поверхностью земли
     }
 
-    update() {
-        this.angle += this.va;
-        this.speedY += this.gravity;
-        this.x -= this.speedX + this.game.speed;
-        this.y += this.speedY;
+    update(deltaTime) {
+        this.angle += this.va * deltaTime;
+        this.speedY += this.gravity * deltaTime;
+        this.x -= (this.speedX + this.game.speed) * deltaTime;
+        this.y += this.speedY * deltaTime;
         if (this.y > this.game.height + this.size || this.x < 0 - this.size) this.markedForDeletion = true;
         if (this.y > this.game.height - this.bottomBounceBoundary && this.bounced < 2) {
             this.bounced++;

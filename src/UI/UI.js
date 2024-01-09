@@ -16,7 +16,7 @@ class UI {
         // очки
         context.fillText('Score: ' + this.game.score, 20, 40);
         // таймер
-        const formattedTime = (this.game.gameTime * 0.001).toFixed(1);
+        const formattedTime = (this.game.gameTime).toFixed(1);
         context.fillText('Timer: ' + formattedTime, 20, 100);
         // сообщения о победе/проигрыше
         if (this.game.gameOver) {

@@ -10,17 +10,17 @@ class Game {
         this.enemies = [];
         this.particles = [];
         this.explosions = [];
-        this.enemyTimer = 0;
-        this.enemyInterval = 1000;
+        this.enemyTimer = 0; // сек.
+        this.enemyInterval = 1; // сек.
         this.ammo = 20;
         this.maxAmmo = 50;
         this.ammoTimer = 0;
-        this.ammoInterval = 500;
+        this.ammoInterval = 0.5; // сек.
         this.gameOver = false;
         this.score = 0;
         this.winningScore = 100;
         this.gameTime = 0;
-        this.timeLimit = 30 * 1000;
+        this.timeLimit = 30; // сек.
         this.speed = 1;
         this.debug = false;
     }
@@ -28,8 +28,8 @@ class Game {
     update(deltaTime) {
         if (!this.gameOver) this.gameTime += deltaTime;
         if (this.gameTime > this.timeLimit) this.gameOver = true;
-        this.background.update();
-        this.background.layer4.update();
+        this.background.update(deltaTime);
+        this.background.layer4.update(deltaTime);
         this.player.update(deltaTime);
         if (this.ammoTimer > this.ammoInterval) {
             if (this.ammo < this.maxAmmo) this.ammo++;
@@ -38,14 +38,14 @@ class Game {
             this.ammoTimer += deltaTime;
         }
         // Обновляем и удаляем шестеренки (частицы)
-        this.particles.forEach(p => p.update());
+        this.particles.forEach(p => p.update(deltaTime));
         this.particles = this.particles.filter(p => !p.markedForDeletion);
         // Обновляем и удаляем взрывы (explosions)
         this.explosions.forEach(ex => ex.update(deltaTime));
         this.explosions = this.explosions.filter(ex => !ex.markedForDeletion);
 
         this.enemies.forEach(enemy => {
-            enemy.update();
+            enemy.update(deltaTime);
             // если игрок столкнулся с врагом, то...
             if (this.checkCollision(this.player, enemy)) {
                 enemy.markedForDeletion = true;
@@ -105,9 +105,9 @@ class Game {
 
     addEnemy() {
         const randomize = Math.random();
-        if (randomize < 0.3) this.enemies.push(new Angler1(this));
-        else if (randomize < 0.6) this.enemies.push(new Angler2(this));
-        else if (randomize < 0.7) this.enemies.push(new HiveWhale(this));
+        if (randomize < 0.4) this.enemies.push(new Angler1(this));
+        else if (randomize < 0.7) this.enemies.push(new Angler2(this));
+        else if (randomize < 0.8) this.enemies.push(new HiveWhale(this));
         else this.enemies.push(new LuckyFish(this));
     }
 

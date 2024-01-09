@@ -2,16 +2,16 @@ class Enemy {
     constructor(game) {
         this.game = game;
         this.x = this.game.width;
-        this.speedX = Math.random() * -1.5 - 2.5;
+        this.speedX = Math.random() * -90 - 270;
         this.markedForDeletion = false;
         this.frameX = 0;
         this.frameY = 0;
         this.maxFrame = 38;
     }
 
-    update() {
+    update(deltaTime) {
         // Обновляем x-координату врага (уменьшаем ее на величину speedX)
-        this.x += this.speedX - this.game.speed; // а также вычитаем this.game.speed чтобы враги появлялись равномерно, а не все разом
+        this.x += (this.speedX - this.game.speed) * deltaTime; // а также вычитаем this.game.speed чтобы враги появлялись равномерно, а не все разом
         // Помечаем врага как удаленного, если он полностью пересечет левую границу игрового поля
         if (this.x + this.width < 0) this.markedForDeletion = true;
         // sprite animation

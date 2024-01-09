@@ -10,11 +10,13 @@ window.addEventListener('load', function () {
 
     // animation loop
     function animate(currentTime) {
-        const deltaTime = currentTime - lastTime; // Разница, в миллисекундах, между итерациями анимационного цикла
+        let deltaTime = currentTime - lastTime; // Разница, в миллисекундах, между итерациями анимационного цикла
+        // rAF calls are paused when running in background tabs
+        if (deltaTime > 100) deltaTime = 100; // minimum 10 fps
         lastTime = currentTime; // Переприсваивание временных позиций
         ctx.clearRect(0, 0, canvas.width, canvas.height); // Очищаем игровое поле перед следующей анимацией
         game.draw(ctx);
-        game.update(deltaTime); // Теперь обновление игры будет зависеть от частоты смены кадров
+        game.update(deltaTime / 1000); // Теперь обновление игры будет зависеть от частоты смены кадров
         requestAnimationFrame(animate);
     }
 

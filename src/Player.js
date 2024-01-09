@@ -6,7 +6,7 @@ class Player {
         this.x = 20;
         this.y = 100;
         this.speedY = 0;
-        this.maxSpeed = 10;
+        this.maxSpeed = 600;
         this.projectiles = [];
         this.image = document.getElementById('player');
         this.frameX = 0;
@@ -14,20 +14,20 @@ class Player {
         this.maxFrame = 38;
         this.powerUp = false;
         this.powerUpTimer = 0;
-        this.powerUpLimit = 10000;
+        this.powerUpLimit = 10; // сек.
     }
 
     update(deltaTime) {
         if (this.game.keys.includes('ArrowUp')) this.speedY = -this.maxSpeed
         else if (this.game.keys.includes('ArrowDown')) this.speedY = this.maxSpeed
         else this.speedY = 0;
-        this.y += this.speedY;
+        this.y += this.speedY * deltaTime;
         // vertical boundaries
         if (this.y > this.game.height - this.height * 0.5) this.y = this.game.
             height - this.height * 0.5;
         else if (this.y < -this.height * 0.5) this.y = -this.height * 0.5;
         // handle projectiles
-        this.projectiles.forEach(pr => { pr.update(); });
+        this.projectiles.forEach(pr => { pr.update(deltaTime); });
         this.projectiles = this.projectiles.filter(pr => !pr.markedForDeletion);
         // sprite animation
         if (this.frameX < this.maxFrame) {
