@@ -6,7 +6,7 @@ class Game {
         this.player = new Player(this);
         this.input = new InputHandler(this);
         this.ui = new UI(this);
-        this.keys = [];
+        this.keys = new Set();
         this.enemies = [];
         this.particles = [];
         this.explosions = [];

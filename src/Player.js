@@ -18,8 +18,8 @@ class Player {
     }
 
     update(deltaTime) {
-        if (this.game.keys.includes('ArrowUp')) this.speedY = -this.maxSpeed
-        else if (this.game.keys.includes('ArrowDown')) this.speedY = this.maxSpeed
+        if (this.game.keys.has('ArrowUp')) this.speedY = -this.maxSpeed
+        else if (this.game.keys.has('ArrowDown')) this.speedY = this.maxSpeed
         else this.speedY = 0;
         this.y += this.speedY * deltaTime;
         // vertical boundaries
