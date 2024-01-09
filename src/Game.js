@@ -1,5 +1,5 @@
 class Game {
-    constructor(width, height) {
+    constructor(width, height, isMobileOrTablet) {
         this.width = width;
         this.height = height;
         this.background = new Background(this);
@@ -23,6 +23,12 @@ class Game {
         this.timeLimit = 30; // сек.
         this.speed = 1;
         this.debug = false;
+
+        if (isMobileOrTablet) {
+            MobileDeviceAdapter.handleShootButton(this);
+            MobileDeviceAdapter.handleTouchPad(this);
+            MobileDeviceAdapter.handleUI();
+        }
     }
 
     update(deltaTime) {

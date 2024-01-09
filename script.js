@@ -11,13 +11,8 @@ window.addEventListener('load', function () {
         return check;
     }
 
-    if (isMobileOrTablet()) {
-        document.getElementById("shoot_btn").style.display = "Block";
-        document.getElementById("description").innerText = "Перемещай морского конька с помощью тачпада и используй кнопку в правом нижнем углу для стрельбы. \n" +
-            "Для победы необходимо за 30 секунд набрать 100 очков";
-    }
+    const game = new Game(canvas.width, canvas.height, isMobileOrTablet());
 
-    const game = new Game(canvas.width, canvas.height);
     let lastTime = 0; // stores a value of timestamp from the previous animation loop
 
     // animation loop
