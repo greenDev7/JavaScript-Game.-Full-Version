@@ -18,9 +18,9 @@ class Game {
         this.ammoInterval = 500;
         this.gameOver = false;
         this.score = 0;
-        this.winningScore = 30;
+        this.winningScore = 100;
         this.gameTime = 0;
-        this.timeLimit = 20 * 1000;
+        this.timeLimit = 30 * 1000;
         this.speed = 1;
         this.debug = false;
     }
