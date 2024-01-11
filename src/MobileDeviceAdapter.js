@@ -26,6 +26,8 @@ class MobileDeviceAdapter {
             } else if (deltaY > 0) {
                 game.keys.add('ArrowDown');
                 game.keys.delete('ArrowUp');
+            } else /* if (deltaY === 0) */ {
+                game.keys.clear();
             }
         });
 
@@ -35,7 +37,7 @@ class MobileDeviceAdapter {
     }
 
     static handleUI() {
-        // то показываем кнопку "Shoot"
+        // показываем кнопку "Shoot"
         document.getElementById("shoot_btn").style.display = "Block";
         // и меняем надпись с правилами игры
         document.getElementById("description").innerText = "Перемещай морского конька с помощью тачпада и используй кнопку в правом нижнем углу для стрельбы. \n" +

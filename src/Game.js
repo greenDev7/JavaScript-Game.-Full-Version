@@ -4,7 +4,6 @@ class Game {
         this.height = height;
         this.background = new Background(this);
         this.player = new Player(this);
-        this.input = new InputHandler(this);
         this.ui = new UI(this);
         this.keys = new Set();
         this.enemies = [];
@@ -28,6 +27,8 @@ class Game {
             MobileDeviceAdapter.handleShootButton(this);
             MobileDeviceAdapter.handleTouchPad(this);
             MobileDeviceAdapter.handleUI();
+        } else {
+            this.input = new InputHandler(this);
         }
     }
 
@@ -111,9 +112,9 @@ class Game {
 
     addEnemy() {
         const randomize = Math.random();
-        if (randomize < 0.4) this.enemies.push(new Angler1(this));
-        else if (randomize < 0.7) this.enemies.push(new Angler2(this));
-        else if (randomize < 0.8) this.enemies.push(new HiveWhale(this));
+        if (randomize < 0.3) this.enemies.push(new Angler1(this));
+        else if (randomize < 0.5) this.enemies.push(new Angler2(this));
+        else if (randomize < 0.7) this.enemies.push(new HiveWhale(this));
         else this.enemies.push(new LuckyFish(this));
     }
 
